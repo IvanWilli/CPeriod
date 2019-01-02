@@ -1,0 +1,179 @@
+---
+title: "Comentario a la población censada en un operativo de período"
+output: html_document
+---
+
+
+
+Los tipos principales de censo son actualmente tres: de hecho, de 
+derecho, y a través de registros. En el segundo caso, además de su particularidad en la 
+definición de unidad de análisis, su extensión en el tiempo hace de este 
+conteo una "película" más que una "foto", fenómeno propio de la dinámica demográfica. 
+Es interesante conocer lo sensible del conteo a las formas posibles de 
+dinámica y relevamiento, y profundizar en la pregunta sobre donde es 
+conveniente colocar en el tiempo la estimación final. También se dejan 
+planteadas preguntas adicionales.
+
+Suponiendo un censo de que se prolonga $d$ anos ($d>0$), 
+en una población homogénea a lo largo de un territorio, se define la 
+función de relevamiento $R_{d}\sim f(t)$, la cual indica de qué forma 
+se cubre el territorio durante $d$, cumpliendo que $\int_{0}^{d}{f(t) dt}=1$.
+De esta manera la población censada será la esperanza matemática:  
+
+$P=\int_{0}^{d}{{}_{ }{}^{ }N_{t}}f(t) dt$
+  
+La cual es un porcentaje de la exposición del período $P=\int_{0}^{d}{N_{t}}dt$. 
+Si suponemos un crecimiento lineal de la población (aceptable en grandes 
+poblaciones en una ventana menor a un ano), su resolución depende de $f(t)$, dado $r$. 
+Como primera aproximación al análisis, podemos suponer dos tipos de relevamiento diferentes, por ejemplo:
+   
+* Uniforme   
+
+$C_{d}\sim U(0,d)$  
+$P^{A}=\int_{0}^{d}{N_{0}(1+rt)\frac{1}{d}dt}=N_{0}(1+\frac{rd}{2})$
+Siendo que $\frac{\partial P^{A}}{\partial r}>0$ y $\frac{\partial P^{A}}{\partial d}$ será positiva solo si $r>0$. Por otro lado $P^{A}=N_{d/2}.$
+   
+* Decreciente
+
+Mediante una distribución exponencial truncada en d, $C_{d}\sim ExpTr(\lambda ,d)$, siendo $C_{d}>0$ para $\lambda>0$. En este contexto $\lambda$ indica qué tan concentrado está el conteo 
+al inicio de d, a mayor $\lambda$ mayor concentración. El conteo poblacional será:  
+$P^{B}=\int_{0}^{d}{ N_{0} (1+rt)\frac{\lambda e^{-\lambda t}}{1-e^{-\lambda d}} } dt=\frac{N_{0}((\lambda +r)e^{d\lambda }-(1+d r)\lambda-r)}{\lambda (e^{\lambda d}-1)}$.  
+A las mismas conclusiones sobre las derivadas del caso uniforme, se le suma que $\frac{\partial P^{B}}{\partial \lambda }$ es negativa sólo si $r>0$.
+
+
+La diferencia entre ambas formas puede verse mejor tomando $r=0.01$ y $d=0.6$ (promedios latinoamericanos). generalizaremos las distintas funciones a través de la distribución beta.
+
+
+
+
+
+```{r include=FALSE}
+# https://stats.stackexchange.com/questions/47771/what-is-the-intuition-behind-beta-distribution
+# https://math.stackexchange.com/questions/699550/mean-and-variance-of-truncated-generalized-beta-distribution
+# r = 0.01
+# d = 0.6
+# lambda = c(0.5, 1, 1.5)
+# PA = 1+r*d/2
+# PB = ((lambda+r)*exp(d*lambda)-(1+d*r)*lambda-r)/(lambda*(exp(lambda*d)-1))
+# PC = 
+# PD = 
+
+
+```
+
+```{r tab}
+library(knitr)
+library(kableExtra)
+# https://stackoverflow.com/questions/49416492/latex-formulas-or-symbols-in-table-cells-using-knitr-and-kableextra-in-r-markdow
+
+# f_t
+# Forma
+# P
+# dpdr
+# dpdd
+# that
+# df <- data.frame(f_t, Forma, P, dpdr, dpdd, that, row.names=LETTERS[1:6])
+# f_t <- c('My formula $\\sum_{i=1}^9$')
+# kable(df, "latex", align="c", booktabs=TRUE, escape = F, caption = '$\\Gamma$') %>%
+# footnote(general=c("$a^2+b^2=c^2,$",     
+#                    "$\\\\sigma^2=\\\\frac{1}{n-1}\\\\sum_{i=1}^n(x_i-\\\\bar{x})^2;$", 
+#                    "1,000 \\\\$;", "100\\\\%."),
+#          number=c("Hello\ there! \\\\textit{Hello\ there!}"),
+#          footnote_as_chunk=TRUE, 
+#          escape=FALSE)
+```
+
+
+Para una población en crecimiento y definida una ventana cualquiera $d$, concentrar el relevamiento al inicio conlleva un menor conteo censal: $P^{B}<P^{A}$. La magnitud de estas diferencias depende del nivel de $r$ y $d$.
+
+
+La segunda cuestión relevante es donde colocar la estimación final. La respuesta adecuada sería en aquel valor de $t (d_{ }>t>0)$ tal que $P={}_{ }{}^{ }N_{t}$ . En el primer caso visto queda claro que a mitad de período. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Analizando un caso real, el Censo de derecho de 2005 en Colombia se planificó un $d=0.8$, para el cual se agruparon áreas menores según similitud de dinámica demográfica reciente, concentrando en el mes central el 65% de la población relevada y con dinámica menos estacionaria, y con un 30% en los últimos 39 días.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+En tercer lugar, si suponemos que existe una función de costo 
+que depende del uso de recursos (presencia en territorio) como así del 
+tiempo (cada día adicional de censo es negativo), se puede pensar 
+obtener $f(t) $tal que minimice el costo.
+
+$C=\int_{0}^{d}{c(f(t),t)}f(t) dt$\\
+
+
+En cuarto lugar, la microsimulación permite prolongar el problema 
+reconociendo subpoblaciones con comportamiento demográfico disímil (alta 
+migración estacional, mortalidad diferencial en invierno, por ejemplo), 
+integrando también una función de costo evaluando escenarios diversos. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
