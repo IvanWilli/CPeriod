@@ -2,18 +2,19 @@
 title: "Censo de derecho. Comentario al conteo de población"
 author: "Iván Williams"
 date: "Enero 2019"
-output: html_document
+output:
+  pdf_document
 ---
 
-¿Cómo puedo medir la superficie de un globo mientras alguien lo esta inflando? ¿Si compro el mismo helado en Finlandia y en Río de Janeiro, tomo la misma cantidad de helado? ¿Cuántas personas residen en una ciudad cualquiera, si en medio de un operativo censal cambia la intención de continuar residiendo de algunos de sus habitantes? 
-Un censo de período implica un operativo que se extiende en un tiempo y territorio predefinidos. Es el caso del censo de derecho, el cual se caracteriza por su definición de residente (con su regla y múltiples excepciones) y por ser un conteo de "película" (más que una "foto").
+Si nos solicitan medir la superficie de un globo mientras otra persona lo esta inflando, ¿qué es lo que medimos? Si compro el mismo helado en Finlandia y en Río de Janeiro, ¿tomo la misma cantidad de helado? ¿Cuántas personas residen en una ciudad cualquiera, si en medio de un operativo censal cambia la intención de continuar residiendo de algunos de sus habitantes (y quizás se haga efectiva antes de que algun censista visite el hogar)? En todos estos casos hay un fenómeno dinámico (un globo que crece, un helado que se derrite y una población que cambia) y una necesidad de medirlo y resumir su dimensión en un punto temporal.
+Un censo de derecho implica un operativo que se extiende en una ventana de tiempo y territorio predefinidos. Se caracteriza principalmente por su definición de residencia (con su regla y múltiples excepciones) y por ser un conteo de "película" (más que una "foto").  
 
-En estos párrafos daremos una primer aproximación a la implicancia de este carácter dinámico en el resultado más importante para un censo de derecho: ¿Cuántos somos?. Lo referido a la distribución de atributos (sexo, edad, residencia anterior, etc.) es más complejo, y requiere más profundidad de la que aquí se trata.
-Hay preguntas adicionales también interesantes: ¿cuán sensible es el conteo a las formas posibles de dinámica y relevamiento?, ¿dónde es conveniente colocar en el tiempo la estimación final?, ¿tiene varianza esta estimacion? Aunque desde un punto de vista distinto, hace más de 50 años Nathan Keyfitz (1966) quizo resaltar el carácter estocástico de un censo cuando sugirió que debería ser considerado una realización en el espacio muestral de poblaciones en el tiempo en donde las mismas condiciones demográficas prevalecieron (y prevalecerán, si se nos permite la adición). A este problema se enfrentan aquellos que planifican este tipo de operativos, y creemos que el análisis demográfico puede aportar algunos elementos disparadores, sin pretender dar verdades finales dada la complejidad empírica del asunto.
+En estos párrafos daremos una primer aproximación a la implicancia de este carácter dinámico en el resultado más importante: ¿Cuántos somos?. Lo referido a la distribución de atributos (sexo, edad, residencia anterior, etc.) es más complejo, y requiere más profundidad de la que aquí se trata.
+Preguntas adicionales interesantes son: ¿cuán sensible es el conteo a las formas posibles de dinámica y relevamiento?, ¿dónde es conveniente colocar en el tiempo la estimación final? ¿Qué fuentes de variabilidad tiene? Aunque desde un punto de vista distinto, hace más de 50 años Keyfitz (1966) quizo resaltar el carácter estocástico de un censo cuando sugirió que podría considerarse como una realización de todas las poblaciones en el tiempo en donde las mismas condiciones demográficas prevalecieron (y prevalecerán, si se nos permite la adición).
 
-Suponiendo un censo que se prolonga $d$ años $\in(0,1]$, en una población distribuida homogéneamente a lo largo de un territorio accesible al instante en todos sus puntos, se define una función de relevamiento $R_{d}\sim f(t)$ en $d\geq t \geq0$, la cual indica de qué forma se cubre el territorio durante $d$, cumpliendo que $\int_{0}^{d}{f(t) dt}=1$ (se recorre completamente).
+Sin pretender abarcar la complejidad empírica del asunto, empecemos por suponer un censo que se prolonga $d$ $\in(0,1)$ años (menos de 12 meses), en una población distribuida homogéneamente a lo largo de un territorio accesible en todos sus puntos. Definimos una función de relevamiento $R_{d}\sim f(t)$ en $d\geq t \geq0$, la cual indica de qué forma se cubre el territorio durante el censo, cumpliendo que $\int_{0}^{d}{f(t) dt}=1$ (se recorre completamente).
  
-Inicialmente podemos considerar cuatro tipos de relevamiento según en qué momento se concentran los mayores esfuerzos ("ritmo" de la película): 
+Inicialmente podemos considerar cuatro tipos de relevamiento según en qué momento se concentran los mayores esfuerzos: 
   
 ```{r echo = F, fig.align='center', fig.height=4}
 library(knitr)
@@ -33,28 +34,30 @@ legend("bottomright", legend=1:4, col=c(1:4), lty=1, cex=0.8,
 
 mtext(text = "Extensión del censo", side = 1, line = 2)
 mtext(text = "f(t)", side = 2, line = .5)
-mtext(paste0("Las funciones fueron pensadas con una distribución beta truncada en d,", "\n" ,"con valores 3, 1, 1 y 7 para alfa y 1, 3, 1 y 7 para beta, en ese orden."), 
-      line = -15, adj = 0, cex = 0.8)
+mtext(paste0("Las funciones fueron pensadas con una distribución beta truncada en d, con valores 3, 1, 1 y 7 para alfa", "\n" ,"y 1, 3, 1 y 7 para beta, en ese orden."), 
+      line = -15, adj = 0, cex = 0.7)
 ```
   
   
-De esta manera,  si la población a cada momento es $N_{t}$, el "conteo" censal puede ser considerado una esperanza matemática de una función de $t$: $E(P)=\int_{0}^{d}{{}_{ }{}^{ }N_{t}}f(t) dt$  
+De esta manera,  si la población a cada momento es $N_{t}$ (función de t), el "conteo" censal puede ser considerado una esperanza matemática:   
+
+$E(P)=\int_{0}^{d}{{}_{ }{}^{ }N_{t}}f(t) dt$.
   
-Donde se pondera la dinámica poblacional según la probabilidad (densidad) de que cada unidad (persona, hogar, vivienda, barrio, o ciudad, la escala es indiferente en esta instancia) sea seleccionada a cada momento t,  y la cual es una porción de la exposición del período $P^*=\int_{0}^{d}{N_{t}dt}$. La varianza de $P$ se puede obtener por diferencia de momentos $E(P^2)-E(P)^2$.  
+Donde se pondera la dinámica poblacional según la probabilidad (densidad) de que cada unidad (persona, hogar, vivienda, barrio, o ciudad, la escala es indiferente en esta instancia) sea seleccionada a cada momento t,  y la cual es una porción de la exposición del período $P^*=\int_{0}^{d}{N_{t}dt}$. La varianza de $P$ (variable aleatoria de "conteo") se puede obtener por diferencia de momentos $E(P^2)-E(P)^2$. En este punto cabe aclarar que aquí consideramos a los problemas de declaración de edad u omisión como sesgos (y no varianza).  
 La segunda cuestión relevante es dónde colocar la estimación final. La respuesta adecuada pareciera ser en aquel valor $t^*$ $(d\geq t^* \geq 0)$ tal que $E(P)=N_{t^*}$, que podemos obtener teóricamente como $t^*=ln(E(P)/N_{0})/r$. En la práctica no contamos con $N_{0}$ (población al inicio del relevamiento), pero puede considerarse un conteo intercensal o el censo anterior con el fin de aproximarse. 
 
-Para mencionar un caso real, el censo de derecho de 2005 en Colombia se planificó con $d=0.8$ (poco más de 9 meses), para el cual se agruparon áreas menores según similitud de dinámica demográfica, con relevamiento simultáneo al interior de cada una, concentrando en el mes central el 65% de la población total que se caracterizaba por una dinámica menos estable, y un 30% en los últimos 39 días (DANE: "Metodología General del Censo 2005", pág 40; "Síntesis del proceso de cierre del Censo General 2005", pág 23). Por otro lado, Uruguay realizó un censo de derecho en 2 meses durante 2011, y colocó la estimación final en aquel momento donde el relevamietno acumuló el 50% del conteo final ("Resultados del Censo de Población 2011", INE). En nuestro ejercicio teórico este momento $t^m$ es tal que $\frac{E(P)}{2}=\int_{0}^{t^m}{{}_{ }{}^{ }N_{t}}f(t)dt$.
+Para mencionar un caso real, el censo de derecho de 2005 en Colombia se planificó con $d=0.8$ (poco más de 9 meses), para el cual se agruparon áreas menores según similitud de dinámica demográfica, con relevamiento simultáneo al interior de cada una, concentrando en el mes central el 65% de la población total que se caracterizaba por una dinámica menos estable, y un 30% en los últimos 39 días (DANE 2006, pág. 40, y 2008,  pág. 23). Por otro lado, Uruguay realizó un censo de derecho en 2 meses durante 2011, y colocó la estimación final en aquel momento donde el relevamiento acumuló el 50% del conteo final (INE de Uruguay, s/f). En nuestro ejercicio teórico este momento $t^m$ es tal que $\frac{E(P)}{2}=\int_{0}^{t^m}{{}_{ }{}^{ }N_{t}}f(t)dt$.
 
-Para darle números a estas relaciones, supongamos un crecimiento exponencial constante en una población de 100 personas en el momento 0 (el nivel no influye), con escenarios de tasa anual $r=0.013$ (promedio latinoamericano en 2010-2015, UN-WPP17) y $r=0.04$ (Guinea Ecuatorial en mismo período), y un horizonte de relevamiento de $d=.2$ o $d=.75$ (2 y 9 meses, según experiencias de Uruguay en 2011 y Colombia en 2005).
+Con motivo de conocer las características de $P$ supongamos un crecimiento exponencial constante en una población de 100 personas en el momento 0 (el nivel no influye en las conclusiones), con escenarios de tasa anual $r=0,013$ (promedio latinoamericano en 2010-2015, *UN-WPP17*) y $r=0.04$ (Guinea Ecuatorial en mismo período, *UN-WPP17*), y un horizonte de relevamiento de $d=0,2$ y $d=0,75$ (2 y 9 meses, cercano a las  experiencias de Uruguay en 2011 y Colombia en 2005). Para cada escenario nos interesa conocer cuánta población se "cuenta", cuál es la varianza de esa estimación, y en qué proporción de la ventana censal se debería colocar lo primero.
 
 ```{r echo = F, results='asis', error=F, warning=F}
 library(kableExtra)
 f_beta_tunc = function(x,a,b,d) {dbeta(x, a, b)/pbeta(d,a,b)}
-N0 = 100
+N0 = 1000000
 df = data.frame(r=0, d=0, s=0, P=0, VarP=0, CV=0, t_hat=0, t_hat2=0)#, ICs=0)
 j = 1
 for (r in c(.01, .04)){
-  for (d in seq(.25, 1,  0.05)){
+  for (d in seq(.2, 1,  0.05)){
     for (s in 1:4){
       #r=0.01;d=0.5;s=1
       Nd = N0*exp(d*r)
@@ -77,48 +80,75 @@ for (r in c(.01, .04)){
   }
 }
 
-dfT = df[df$d==.25 | df$d==.75, -5]
+dfT = df[df$d==.2 | df$d==.75, -5]
+rownames(dfT) = NULL
 kable(dfT, digits = 2, caption = 'Escenarios teóricos de relevamiento',   
-      col.names = c("$r$", "$d$", '$R_{d}$', '$E(P)$', '$CV$', '$t^*/d$', '$t^m/d$')) %>% #'$Ls(IC95)$', 
+      col.names = c("r", "d", 'Rd', 'E(P)', 'CV', 't*/d', 'tm/d')) %>% #'$Ls(IC95)$', 
       kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
       full_width = F, position = "center") %>%
       row_spec(1:4, background = "#ffffff") %>%
       row_spec(5:8, background = "#f8f8ff") %>%
       row_spec(9:12, background = "#f2f7fd") %>%
       row_spec(13:16, background = "#f2f4f7") %>%
-      add_footnote(c("CV: coeficiente de variación.","$t^*/d$ indica en qué porción de d se debería colocar la estimación final."))
+      add_footnote(c("CV: coeficiente de variación.",
+                     "t*/d y tm/d indican en qué porción de d se debería colocar la estimación final."))
 
 # "Ls(IC95): límite superior del intervalo de    confianza 95.","\n", 
 
 ```
 
-```{r echo=FALSE, eval=FALSE}
-M = 0.05
-Q = 0.04
-n = 1
-P = df[df$r==0.01 & df$s==3 & df$d==1, "P"]
-Var_P = df[df$r==0.01 & df$s==4 & df$d==1, "VarP"]
-Var_M = 1/P*M*(1-Q)*(1*M/Q)
-Var_M2 = Var_M + Var_P
-Var_M2/Var_M
-``` 
 
-A partir del desarrollo de Chiang (1983) de la varianza de una tasa específica, podemos estimar el impacto de incluir la "varianza censal". Si suponemos que la población expuesta es estimada con un censo anual de relevamiento uniforme (es decir, con población a mitad de período), y que para la población de edad x: $r_x=0,01$, $q_x=0,001$ y $m_x=0,0015$; entonces a la estimación inicial de $Var(m_x)=0,0006$ le sumaríamos $Var(P_x)=0,017$  (por independiencia), resultando en una varianza total 28 veces mayor. Cabe aclarar que consideramos sesgo (y no varianza) a los problemas de declaración de edad u omisión.
+En base a los escenarios simulados, como principales conclusiones podemos inferir que:  
 
-Como principales conclusiones podemos decir que:  
-
-* Extender el período aumenta tanto el "conteo" final como su variabilidad, y el impacto depende de la relación entre r y $R_{d}$. A una tasa de crecimiento del 1%, cada mes de extensión implica algo menos de 0,2% adicional de coeficiente de variación.
+* Extender el período aumenta tanto el "conteo" final como su variabilidad, y el impacto depende de la relación entre r y $R_{d}$. Si repetimos el anterior ejercicio para pequeños intervalos en d, con una tasa de crecimiento del 1%, cada mes adicional de extensión implica incrementar algo menos de 0,2% el coeficiente de variación.
 
 ```{r echo=FALSE, eval=FALSE}
 #plot(tmp$d,tmp$CV,t="o")
 lm(CV~d, data = df[df$r==0.01 & df$s==1,])$coefficients[2]
 ```
-* Para el ejemplo propuesto, la varianza de la tasa específica de mortalidad se encuentra muy afectada por la "varianza censal". Un análisis más profundo es  necesario en este sentido, para evaluar el supuesto de independencia.
 
-* El único escenario que pareciera justificar colocar la estimación a mitad de período es cuando el relevamiento es uniforme (forma 3 de relevamiento) o si la población no crece en el intervalo. El criterio de "mediana" $t^m$ es una muy buena aproximación a $t^*$. 
+* El momento donde colocar la estimación parece estar afectado solamente por la forma de relevamiento durante $d$. El único escenario que pareciera justificar colocar la estimación a mitad de período es cuando el relevamiento es uniforme (forma 3 de relevamiento) o si la población no crece en el intervalo. El criterio de $t^m$ (INE Uruguay, 2011) es una muy buena aproximación a $t^*$. 
 
-Un comentario final para la estrategia de Colombia comentada anteriormente, la cual tiene como fin principal la buena captación de una estructura de atributos a referenciar temporalmente a mitad de período. Con estrategias sectorizadas de este tipo, se puede pensar en el mismo ejercicio anterior pero con varias subpoblaciones, cada una con su forma de relevamiento $R_{d}$, para luego "llevar" cada estimación desde su respectivo $t^*$ (o $t^m$) a un punto en común utilizando las respectivas tasas $r$ (en función de una estimación censal anterior). Por otro lado, modelos de microsimulación (Zagheni, 2017) pueden ser una herramienta para cuantificar la variabilidad estadística del conteo en áreas de especial movilidad.
+Es posible que esta variabilidad tenga un impacto en las tasas de mortalidad específicas. Una de las metodologías de estimación de la varianza de $m_x$ más utilizada por los demográfos sólo considera la varianza de $P$ (a mitad de período) como parte del estimador de la población a edad exacta, lo que permite un tratamiento de cohorte y hacer uso de una distribución binomial (Chiang, 1961). El hecho de que variabilidad de $P$ sugerida aquí  no dependa de la cantidad de población a "contar", contrasta con la metodología mencionada, la que aumenta la precisión a medida que se acumula "exposición". Una mayor profundización merece este posible impacto en las tasas.
 
-El motivo de estos párrafos fue brindar algunas pautas iniciales sobre la naturaleza de aquello que contamos en un censo de derecho, sistema complejo donde se interrelacionan la dinámica demográfica y la planificación censal (con sus objetivos y restricciones), tratando de dimensionar un comportamiento dinámico, como aquel que mide un globo mientras otro lo esta inflando.
 
-*Lo anterior es parte de un proyecto de investigación en curso. Interesados en replicar los resultados e intercambiar ideas pueden escribir a: williams@demog.mpdr.com* 
+<!-- Podemos imaginar una población de edad 0, la cual es "contada" con un censo de derecho semestral (inicia el 1/1) con relevamiento "normal" (de tipo 4). En base al conteo se cree que $r$ se aproxima a $0,01$ y replicando el ejercicio anterior podemos conocer $t^*$ (para $d=0,5$), donde la estimación censal se colocaría a los 4,7 meses. Adicionalmente  las probabilidades de fallecimiento y la tasa de mortalidad se saben de $q_x=0.03501$  y $m_x=0.03609$ (valores mundiales 2010-2015, *UN-WPP17*). De esta manera, trasladando la estimación censal a mitad de período la estimación de la varianza es $Var(m_x)=0,0004$, y la que aquí tratamos es de $Var(P_x)=0,021$. Aunque por supuesto no son comparables, la última debería ser incorporada en la estimación de la varianza final de la tasa de mortalidad, la cual requeriría previamente descomponer la varianza de P en la referida por Chiang (1961) y la "censal", posiblemente suponiendo independencia dado el diferente origen de variabilidad. Este aspecto requiere mayor profundización. --> 
+
+
+
+```{r echo=FALSE, eval=FALSE}
+M = 0.03609
+Q = 0.03501
+n = 1
+d = 0.5
+# se que la tasa esta cercana al 1% anual
+t_ast = df[df$r==0.01 & df$s==4 & df$d==.5, "t_hat"]
+P = df[df$r==0.01 & df$s==4 & df$d==.5, "P"]
+Var_P = df[df$r==0.01 & df$s==4 & df$d==.5, "VarP"]
+
+# donde se coloca
+t_ast*d*12
+
+#supongo q inicia a 1/1
+Pmitad = P*exp(0.01*(-t_ast*d+0.5))
+Var_M = 1/Pmitad*M*(1-Q)*(n*M/Q)^2
+Var_M
+Var_P
+``` 
+
+Por último, un comentario merece la estrategia de Colombia, la cual tiene como fin principal la buena captación de una estructura de atributos a referenciar temporalmente a mitad de período. Como vimos en los escenarios simulados, subpoblaciones con fuerte cambio demográfico deben ser objeto de estrategias censales concentradas.
+Con operativos sectorizados de este tipo, cada estimación de estas subpoblacines luego puede trasladarse en el tiempo hacia un punto en común, utilizando las respectivas tasas $r$ (en función de una estimación censal anterior) y sus respectivos puntos de referencia $t^*$ (o $t^m$). Adicionalmente, como elementos de análisis más innovadores, modelos de microsimulación (Zagheni, 2017) pueden ser una herramienta para cuantificar la variabilidad estadística del conteo en áreas de especial movilidad y crecimiento. 
+
+El motivo de estos párrafos fue exponer algunas ideas sobre la naturaleza de aquello que contamos en un censo de derecho, sistema complejo donde se interrelacionan la dinámica demográfica y la planificación censal (con sus objetivos y restricciones), tratando de dimensionar un comportamiento dinámico, como aquel que mide un globo mientras otro lo esta inflando.
+
+#### Bibliografía y fuente de datos:
+* *Chiang et. al (1961). "Standard error of the age-adjusted death rate". U.S. Dept. of Health, Education, and Welfare, Public Health Service, National Vital Statistics Division.* 
+* *DANE (2008). "Síntesis del proceso de cierre del Censo General 2005". Colombia*
+* *DANE (2009). "Metodología General del Censo 2005". Colombia*
+* *INE de Uruguay (s/f). "Resultados del Censo de Población 2011". Consultado en* http://www.ine.gub.uy/documents/10181/35289/analisispais.pdf/cc0282ef-2011-4ed8-a3ff-32372d31e690
+* *Keyfitz N. (1966). Sampling variance of standarized mortality rates. Human Biology, Vol. 38, No. 3*
+* *UN-WPP17: United Nations. World Population Propects 2017. Consultado en* https://population.un.org/wpp/
+* *Zagheni E. 2015. “Microsimulation in Demographic Research.”. International Encyclopedia of the Social and Behavioral Sciences, 2nd edition, Vol 15.*
+
+
+*Interesados en replicar los resultados e intercambiar ideas pueden escribir a: ivanwilliams1985@gmail.com* 
